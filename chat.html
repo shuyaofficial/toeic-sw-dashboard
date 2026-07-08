@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <title>AI解説チャット — TOEIC Speaking 学習管理ダッシュボード</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <link rel="stylesheet" href="assets/chat.css">
+</head>
+
+<body>
+  <div class="chat-shell">
+    <!-- ヘッダ -->
+    <header class="chat-header">
+      <a class="chat-header__back" href="index.html">← ダッシュボード</a>
+      <h1 class="chat-header__title">AI解説チャット</h1>
+      <div class="chat-header__actions">
+        <button type="button" id="connBadge" class="conn-badge conn-badge--nokey" aria-label="接続モード">
+          <span class="conn-badge__dot"></span>キー未設定
+        </button>
+        <button type="button" id="historyBtn" class="icon-btn" aria-label="履歴">🕘</button>
+        <button type="button" id="newBtn" class="icon-btn" aria-label="新しい質問">＋</button>
+        <button type="button" id="settingsBtn" class="icon-btn" aria-label="設定">⚙︎</button>
+      </div>
+    </header>
+
+    <!-- スレッド -->
+    <main class="chat-thread" id="thread" aria-live="polite">
+      <noscript>
+        <p style="padding:24px;text-align:center;">このチャットの利用には JavaScript が必要です。</p>
+      </noscript>
+    </main>
+
+    <!-- コンポーザ -->
+    <div class="composer" id="composer">
+      <div class="attach-preview" id="attachPreview" hidden></div>
+      <div class="composer__row">
+        <button type="button" id="imageBtn" class="composer__image-btn" aria-label="画像を添付">＋</button>
+        <input type="file" id="fileInput" class="file-input-hidden" accept="image/*" multiple>
+        <textarea id="composerInput" class="composer__input" rows="1"
+          placeholder="質問を入力、または画像を貼り付け…" aria-label="メッセージ入力"></textarea>
+        <button type="button" id="sendBtn" class="composer__send" aria-label="送信">↑</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 履歴シート -->
+  <div class="sheet" id="historySheet" hidden role="dialog" aria-modal="true" aria-label="履歴">
+    <div class="sheet__backdrop" id="historyBackdrop"></div>
+    <div class="sheet__panel">
+      <div class="sheet__head">
+        <span class="sheet__title">履歴</span>
+        <button type="button" id="historyClose" class="sheet__close" aria-label="閉じる">×</button>
+      </div>
+      <div class="history__list" id="historyList"></div>
+    </div>
+  </div>
+
+  <!-- 設定モーダル -->
+  <div class="modal" id="settingsModal" hidden role="dialog" aria-modal="true" aria-label="設定">
+    <div class="modal__backdrop" id="settingsBackdrop"></div>
+    <div class="modal__panel">
+      <div class="modal__head">
+        <span class="modal__title">設定</span>
+        <button type="button" id="settingsClose" class="modal__close" aria-label="閉じる">×</button>
+      </div>
+
+      <div class="field">
+        <span class="field__label">接続モード（自動判定）</span>
+        <div class="field__mode-row">
+          <span class="field__value" id="backendMode">検出中…</span>
+          <button type="button" id="redetectBtn" class="btn btn--ghost btn--small">再検出</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field__label" for="modelSelect">モデル</label>
+        <select id="modelSelect" class="field__select">
+          <option value="claude-opus-4-8">claude-opus-4-8（高精度・既定）</option>
+          <option value="claude-sonnet-5">claude-sonnet-5（バランス）</option>
+          <option value="claude-haiku-4-5">claude-haiku-4-5（高速・安価）</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label class="field__label" for="keyInput">Anthropic APIキー</label>
+        <input type="password" id="keyInput" class="field__input" placeholder="sk-ant-…"
+          autocomplete="off" spellcheck="false">
+        <p class="field__mask" id="keyMask">現在: 未設定</p>
+        <div class="field__btn-row">
+          <button type="button" id="saveKeyBtn" class="btn btn--primary">保存</button>
+          <button type="button" id="deleteKeyBtn" class="btn btn--danger">削除</button>
+        </div>
+      </div>
+
+      <p class="field__note">キーはこの端末のブラウザにのみ保存されます。外部へ送信されるのは、AI解説の際に画像・質問がAnthropic（APIモード）またはローカルCLI（無料モード）へ渡るときのみです。</p>
+    </div>
+  </div>
+
+  <!-- 画像原寸オーバーレイ -->
+  <div class="image-overlay" id="imageOverlay" hidden></div>
+
+  <!-- トースト -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- 非module・プレーンな defer スクリプト。読み込み順は db → api → render → app。 -->
+  <script defer src="assets/chat-db.js"></script>
+  <script defer src="assets/chat-api.js"></script>
+  <script defer src="assets/chat-render.js"></script>
+  <script defer src="assets/chat-app.js"></script>
+</body>
+
+</html>

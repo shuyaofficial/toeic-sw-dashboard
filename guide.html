@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <title>使い方ガイド — TOEIC Speaking 学習管理ダッシュボード</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <style>
+    /* guide.html 固有の最小スタイル（styles.css のトークンを再利用） */
+    .guide {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 8px var(--pad-page) 64px;
+    }
+
+    .guide__head {
+      padding: 20px 4px 8px;
+    }
+
+    .guide__eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--text-3);
+    }
+
+    .guide__title {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-top: 2px;
+    }
+
+    .guide__lead {
+      margin-top: 8px;
+      font-size: 15px;
+      color: var(--text-2);
+      line-height: 1.6;
+    }
+
+    .toc {
+      margin: 16px 0 8px;
+      padding: 16px;
+    }
+
+    .toc__title {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--text-3);
+      margin-bottom: 10px;
+    }
+
+    .toc__list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .toc__link {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 15px;
+    }
+
+    .toc__link:hover {
+      text-decoration: underline;
+    }
+
+    .g-section {
+      margin-top: 12px;
+      padding: 20px;
+    }
+
+    .g-section__num {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--text-3);
+    }
+
+    .g-section__title {
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin: 2px 0 12px;
+    }
+
+    .g-section p {
+      font-size: 15px;
+      line-height: 1.65;
+      color: var(--text);
+      margin: 8px 0;
+    }
+
+    .g-section p.muted {
+      color: var(--text-2);
+    }
+
+    .g-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 8px 0;
+    }
+
+    .g-list li {
+      display: flex;
+      gap: 10px;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .g-list__marker {
+      flex: 0 0 auto;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1px;
+    }
+
+    .g-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0 4px;
+      font-size: 14px;
+    }
+
+    .g-table th,
+    .g-table td {
+      text-align: left;
+      padding: 10px 8px;
+      border-bottom: 1px solid var(--separator);
+      vertical-align: top;
+      line-height: 1.5;
+    }
+
+    .g-table th {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--text-3);
+    }
+
+    .g-table td:first-child {
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .g-table code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 13px;
+      padding: 1px 5px;
+      border-radius: 6px;
+      background: var(--surface-2);
+    }
+
+    .qa {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-top: 8px;
+    }
+
+    .qa__q {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .qa__a {
+      font-size: 14px;
+      color: var(--text-2);
+      line-height: 1.6;
+      margin-top: 3px;
+    }
+
+    .callout {
+      margin-top: 12px;
+      padding: 12px 14px;
+      border-radius: var(--r-md);
+      background: color-mix(in srgb, var(--warn) 12%, transparent);
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .guide__foot {
+      margin-top: 28px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .guide__foot a {
+      font-size: 14px;
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .guide__foot a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="guide">
+    <header class="guide__head">
+      <p class="guide__eyebrow">TOEIC Speaking 学習アプリ</p>
+      <h1 class="guide__title">使い方ガイド</h1>
+      <p class="guide__lead">はじめての方向けに、このフォルダの中身と使い方をやさしくまとめました。順番に読めば、学習ダッシュボードとAI解説チャットを迷わず使えます。</p>
+    </header>
+
+    <!-- 目次 -->
+    <nav class="card toc" aria-label="目次">
+      <p class="toc__title">目次</p>
+      <ul class="toc__list">
+        <li><a class="toc__link" href="#s1">1. このフォルダは何？</a></li>
+        <li><a class="toc__link" href="#s2">2. はじめ方</a></li>
+        <li><a class="toc__link" href="#s3">3. ダッシュボードの使い方</a></li>
+        <li><a class="toc__link" href="#s4">4. AI解説チャットの使い方</a></li>
+        <li><a class="toc__link" href="#s5">5. 困ったとき（Q&amp;A）</a></li>
+      </ul>
+    </nav>
+
+    <!-- 1 -->
+    <section class="card g-section" id="s1">
+      <p class="g-section__num">01</p>
+      <h2 class="g-section__title">このフォルダは何？</h2>
+      <p class="muted">TOEIC Speakingテスト対策の教材（改訂版TOEIC(R)スピーキングテスト究極のゼミ）を、3つのトラックで管理する小さな学習アプリ一式です。ファイルの役割は次のとおりです。</p>
+      <table class="g-table">
+        <thead>
+          <tr><th>ファイル</th><th>役割</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>アプリを起動.command</code></td><td><b>アプリはこれ。</b>ダブルクリックでダッシュボードが開きます（無料AIモード込み／Mac）。</td></tr>
+          <tr><td><code>はじめにお読みください.html</code></td><td><b>説明書はこれ。</b>開くとこのガイドが表示されます。</td></tr>
+          <tr><td><code>index.html</code></td><td>学習ダッシュボード本体（Web用）。直接ダブルクリックでも開けます。</td></tr>
+          <tr><td><code>chat.html</code></td><td>AI解説チャット本体（Web用）。</td></tr>
+          <tr><td><code>guide.html</code></td><td>このガイド本体（Web用）。</td></tr>
+          <tr><td><code>assets</code></td><td>アプリの部品が入った箱。<b>触らないでください。</b></td></tr>
+          <tr><td><code>local-bridge</code></td><td>無料AIモード用の小さなサーバ。<b>触らないでください。</b></td></tr>
+          <tr><td><code>tools</code></td><td>教材データを作るための開発用スクリプト。使う分には触らなくて大丈夫です。</td></tr>
+          <tr><td><code>DESIGN.md</code> / <code>README.md</code></td><td>開発用のメモ。使う分には読まなくて大丈夫です。</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 2 -->
+    <section class="card g-section" id="s2">
+      <p class="g-section__num">02</p>
+      <h2 class="g-section__title">はじめ方</h2>
+      <p class="muted">開き方は3通りあります。どれでも学習ダッシュボードが使えます。</p>
+      <ul class="g-list">
+        <li><span class="g-list__marker">1</span><span>公開URLを開く：<code>https://shuyaofficial.github.io/toeic-sw-dashboard/</code>（スマホでもOK）。</span></li>
+        <li><span class="g-list__marker">2</span><span><code>index.html</code> をダブルクリックして、いつものブラウザで開く。</span></li>
+        <li><span class="g-list__marker">3</span><span>「アプリを起動.command」をダブルクリック（ダッシュボード＋無料AIモード込みで立ち上がります／Mac）。</span></li>
+      </ul>
+    </section>
+
+    <!-- 3 -->
+    <section class="card g-section" id="s3">
+      <p class="g-section__num">03</p>
+      <h2 class="g-section__title">ダッシュボードの使い方</h2>
+      <p class="muted">上部のセグメントで3つのトラックを切り替えます。</p>
+      <ul class="g-list">
+        <li><span class="g-list__marker">①</span><span><b>ゼミタブ</b>：教科書を1周するトラック。セクション（第1回〜第11回＋直前チェックリスト）を開いて、読み終えた項目の行をタップすると完了になります。右側の「◯p」はその項目のページ数です。</span></li>
+        <li><span class="g-list__marker">②</span><span><b>模試タブ</b>：模試1〜3 を3周するトラック。終えたマスをタップ、マス右上の「⋯」からスコア（0〜200・10点刻み）を入力できます（任意）。グリッド下に周ごとの平均スコアの推移と、目標スコアのライン（点線）が表示されます。</span></li>
+        <li><span class="g-list__marker">③</span><span><b>演習タブ</b>：Q1-2/Q3-4/Q5-7/Q8-10/Q11 のタイプ別に2周する反復トラック。マスをタップして完了トグルします（スコア入力はありません）。</span></li>
+      </ul>
+      <p>画面上部の<b>リング</b>は「残りの数」を表します。中央の大きな数字が残り、下の小さな数字が割合です。単位はタブごとに変わります（ゼミ＝ページ／模試＝回／演習＝問）。</p>
+      <p>ヒーロー上部の3つのチップは「試験日までの日数」「①ゼミの締切までの日数」「②③（模試・演習）の締切までの日数」です。「今日やるべき量」は締切から自動計算され、<b>前倒し（緑）／わずかに遅れ（琥珀）／遅れ（赤）</b>のバッジで今のペースがわかります。</p>
+      <p>ヘッダ右上の<b>歯車ボタン</b>から設定を開けます。試験日・①ゼミの締切・②③（模試・演習）の締切・目標スコアを変更できます。既定の目標スコアは130点（TOEIC Speakingプロフィシェンシー・レベル6の下限の目安）です。締切や試験日の順番が前後していると警告文が出ますが、保存自体はブロックされません。</p>
+      <p class="muted">フッタからは進捗の<b>エクスポート／インポート（JSON）</b>とリセットができます。端末を変えるときや、念のためのバックアップに使ってください。</p>
+    </section>
+
+    <!-- 4 -->
+    <section class="card g-section" id="s4">
+      <p class="g-section__num">04</p>
+      <h2 class="g-section__title">AI解説チャットの使い方</h2>
+      <ul class="g-list">
+        <li><span class="g-list__marker">1</span><span>わからない問題の<b>スクリーンショット</b>を撮ります。</span></li>
+        <li><span class="g-list__marker">2</span><span>チャット画面に<b>貼り付け</b>（⌘V）します。ドラッグ＆ドロップや添付ボタンでもOK。</span></li>
+        <li><span class="g-list__marker">3</span><span>「解説して」と入力して<b>送信</b>。答え→なぜ→たとえ話→ついでに覚える、の順でやさしく解説します。</span></li>
+      </ul>
+      <p class="muted">利用モードは2つ。どちらでも使い方は同じです。</p>
+      <table class="g-table">
+        <thead>
+          <tr><th>モード</th><th>特徴</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>ローカル・<br>無料モード</td>
+            <td>Macで「アプリを起動.command」を実行して使います。手元の <code>claude</code> CLI を利用するため<b>無料</b>。設定は不要です。</td>
+          </tr>
+          <tr>
+            <td>APIモード</td>
+            <td>設定にAnthropicのAPIキーを入れると使えます。<b>スマホや外出先でもOK</b>。使った分だけの少額従量課金です。</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="muted">会話の<b>履歴はこの端末に保存</b>されます。各会話はエクスポート（書き出し）でファイルにも残せます。</p>
+    </section>
+
+    <!-- 5 -->
+    <section class="card g-section" id="s5">
+      <p class="g-section__num">05</p>
+      <h2 class="g-section__title">困ったとき（Q&amp;A）</h2>
+      <div class="qa">
+        <div>
+          <p class="qa__q">Q. 進捗が消えた／表示されない</p>
+          <p class="qa__a">進捗は開いたブラウザごとに保存されます。別のブラウザやプライベートモードで開いていないか確認してください。バックアップした<b>JSONをインポート</b>すれば元に戻せます。</p>
+        </div>
+        <div>
+          <p class="qa__q">Q. 設定した締切・目標スコアが反映されない</p>
+          <p class="qa__a">設定モーダルの「保存」を押したか確認してください。「キャンセル」や背景クリック・Escキーは変更を破棄して閉じます。「既定に戻す」は入力欄を初期値に戻すだけで、保存するまでは反映されません。</p>
+        </div>
+        <div>
+          <p class="qa__q">Q. チャットが「キー未設定」と出る</p>
+          <p class="qa__a">APIモードで使うには、設定でAnthropicのAPIキーを入力してください。無料で使いたい場合は「アプリを起動.command」から立ち上げてください。</p>
+        </div>
+        <div>
+          <p class="qa__q">Q. 無料モードにならない</p>
+          <p class="qa__a">「アプリを起動.command」を<b>先に実行</b>しているか確認してください。ローカルサーバが立ち上がっていると、チャットは自動で無料モード（緑バッジ）になります。</p>
+        </div>
+        <div>
+          <p class="qa__q">Q. データはどこに送られる？</p>
+          <p class="qa__a">学習の進捗もチャット履歴も、<b>この端末の中だけ</b>に保存されます。外部に送られるのは、AI解説を使ったときに<b>画像と質問</b>がAnthropic（APIモード）またはローカルのCLI（無料モード）へ渡るときのみです。</p>
+        </div>
+      </div>
+      <p class="callout">教材のスクリーンショットは、<b>自分の学習用途にのみ</b>使用してください。SNSなどへの公開・共有はしないでください。</p>
+    </section>
+
+    <!-- フッタ -->
+    <nav class="guide__foot" aria-label="移動">
+      <a href="index.html">← 学習ダッシュボード</a>
+      <a href="chat.html">AI解説チャット →</a>
+    </nav>
+  </div>
+</body>
+
+</html>

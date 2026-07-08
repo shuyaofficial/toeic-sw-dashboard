@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <title>TOEIC Speaking 学習管理ダッシュボード</title>
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+
+<body>
+  <main class="app" id="app">
+    <!-- app.js が動的にレンダリングする。JS無効時のフォールバック文言のみ置く。 -->
+    <noscript>
+      <p style="padding:24px;text-align:center;">
+        このダッシュボードの利用には JavaScript が必要です。
+      </p>
+    </noscript>
+  </main>
+
+  <!-- 非module・プレーンな defer スクリプト。読み込み順は data.js → app.js。 -->
+  <script defer src="assets/data.js"></script>
+  <script defer src="assets/app.js"></script>
+</body>
+
+</html>
