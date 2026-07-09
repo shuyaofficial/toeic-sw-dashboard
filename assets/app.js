@@ -1,7 +1,8 @@
 /* ===========================================================================
    TOEIC Speaking 学習管理ダッシュボード — app.js
    非module IIFE。グローバル汚染しない。state はイミュータブル更新。
-   依存: window.TOEICSW_DATA (data.js), localStorage。外部通信ゼロ。
+   依存: window.TOEICSW_DATA (data.js), localStorage。
+   外部通信は assets/sync.js（任意の Gist 同期）のみ。
    =========================================================================== */
 (function () {
   "use strict";
@@ -133,6 +134,7 @@
     } catch (e) {
       /* 保存不可でも UI は継続 */
     }
+    if (window.GistSync) window.GistSync.onLocalSave();
   }
 
   // 現在の state。差し替えは setState 経由のみ。
@@ -369,6 +371,7 @@
     root.textContent = "";
     root.appendChild(frag);
     if (modal.open) focusModalField();
+    if (window.GistSync) window.GistSync.onRender();
   }
   /* --- ヘッダ ------------------------------------------------------------- */
   function buildHeader() {
@@ -779,7 +782,8 @@
       "全" + SEMINAR_TOTAL_ITEMS + "項目 ・ 模試" + DATA.mock.tests.length + "×" + DATA.mock.rounds
       + " ・ 演習" + DRILL_Q_PER_ROUND + "問×" + DATA.drill.rounds + "周",
     ]);
-    return el("div", {}, [actions, meta]);
+    var syncSlot = el("div", { class: "sync", id: "syncSlot" });
+    return el("div", {}, [actions, syncSlot, meta]);
   }
 
   /* === 設定モーダル === */
@@ -1003,4 +1007,10 @@
   // 初回起動時に startDate を必ず永続化（破損復帰時も含む）。
   saveState(state);
   render({});
+
+  // Gist 同期 (assets/sync.js) 連携ブリッジ。sync.js 未読込時は未使用。
+  window.__DASHBOARD_BRIDGE__ = {
+    getState: function () { return state; },
+    applyRemoteState: function (obj) { setState(normalizeState(obj)); },
+  };
 })();
